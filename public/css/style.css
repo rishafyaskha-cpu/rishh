@@ -1,0 +1,614 @@
+/* RESET BASIC
+   font-family SENGAJA tidak ada di sini: selector * akan cocok langsung ke
+   tiap elemen, sehingga selalu mengalahkan nilai warisan dari induknya.
+   Akibatnya baris-baris ASCII terminal memakai Segoe UI (font proporsional)
+   dan art-nya meleset ke samping. Font dasar dipindah ke body. */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: #0d0f12;
+  --card-bg: #161920;
+  --card-border: #262a36;
+  --text-primary: #ffffff;
+  --text-secondary: #9ea4b0;
+  --accent-color: #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #12141d;
+  color: #ffffff;
+  padding: 0 10%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 0;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: #a0a5b5;
+  text-decoration: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+.sub-title {
+  color: #8a8f9d;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 2px;
+}
+
+.hero-title {
+  font-size: clamp(34px, 5.2vw, 75px);
+  font-weight: 800;
+  margin-bottom: 25px;
+  line-height: 1.2;
+  letter-spacing: -2px;
+
+}
+
+.hero-title span {
+  background: linear-gradient(135deg, #55e7f7, #6366f1);
+  /* Gradasi ungu ke indigo ala Gengar */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+
+  animation: text-gengar 2s linear infinite;
+}
+
+@keyframes text-gengar {
+  0% {
+    color: #a855f7;
+  }
+
+  50% {
+    color: #6366f1;
+  }
+
+  100% {
+    color: #a855f7;
+  }
+}
+
+
+
+.hero-desc {
+  font-size: 16px;
+  color: #94a3b8;
+  /* Warna abu-abu slate yang lebih lembut di mata */
+  line-height: 1.8;
+  /* Spasi antarbaris sedikit ditinggikan agar terkesan clean */
+  max-width: 600px;
+  /* Lebar maksimal sedikit diperkecil agar teks terbungkus dengan manis */
+  margin-bottom: 40px;
+  /* Jarak ke tombol Let's Talk */
+  text-align: justify;
+  /* Lebih disarankan rata kiri agar teks pendek tidak renggang aneh */
+}
+
+
+
+.btn-primary {
+  display: inline-block;
+  background-color: #ffffff;
+  color: #12141d;
+  padding: 12px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #e2e4e9;
+}
+
+.stats-section {
+  display: flex;
+  gap: 30px;
+  background-color: #1a1d26;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 60px;
+  border: 1px solid #282c37;
+}
+
+.stat-card h3 {
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.stat-card p {
+  color: #8a8f9d;
+  font-size: 14px;
+}
+
+.skills-section,
+.cta-section {
+  margin-bottom: 80px;
+}
+
+.skills-grid {
+  margin-top: 20px;
+}
+
+.skill-card {
+  background-color: #1a1d26;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #282c37;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #1a1d26, #252a38);
+  padding: 50px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #282c37;
+}
+
+.cta-section h2 {
+  margin-bottom: 10px;
+}
+
+.cta-section p {
+  color: #8a8f9d;
+  margin-bottom: 25px;
+}
+
+/* HERO SECTION FLEX LAYOUT */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 0;
+  gap: 40px;
+}
+
+.hero-content {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+/* GHOSTTY ASCII TERMINAL
+   UKURAN = versi awal (tidak diubah): char-width 3.2px..7.2px, padding 14px.
+   Yang diperbaiki hanya akurasi kolom: memakai JetBrains Mono asli yang
+   advance-nya 0.6em, lalu font-size diturunkan dari char-width sehingga
+   lebar tiap karakter benar-benar sama dengan --ghostty-char-width. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');
+}
+
+.ghostty {
+  --ghostty-columns: 100;
+  --ghostty-rows: 40;
+  --ghostty-padding: 14px;
+  --ghostty-char-width: clamp(3.2px, calc(0.36vw - 0.28px), 7.2px);
+  --ghostty-line-height: calc(var(--ghostty-char-width) * 2.250);
+  /* advance JetBrains Mono tepat 0.6em -> font-size = char-width / 0.6 */
+  --ghostty-font-size: calc(var(--ghostty-char-width) / 0.6);
+  --ghostty-width: calc(var(--ghostty-columns) * var(--ghostty-char-width) + (2 * var(--ghostty-padding)));
+
+  flex: 0 0 auto;
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ghostty__window {
+  width: var(--ghostty-width);
+  background: #0f0f11;
+  border: 1px solid #4c4c50;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ghostty__bar {
+  display: grid;
+  grid-template: "start title end";
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 9px 9px 0 0;
+}
+
+.ghostty__lights {
+  grid-area: start;
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ghostty__lights li {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.ghostty__lights li:nth-child(1) {
+  background: #ff605c;
+}
+
+.ghostty__lights li:nth-child(2) {
+  background: #ffbd44;
+}
+
+.ghostty__lights li:nth-child(3) {
+  background: #00ca4e;
+}
+
+.ghostty__title {
+  grid-area: title;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #dbdbdc;
+}
+
+.ghostty__screen {
+  height: calc(var(--ghostty-rows) * var(--ghostty-line-height) + (2 * var(--ghostty-padding)));
+  padding: var(--ghostty-padding);
+  overflow: hidden;
+  color: #c3c3c4;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  font-size: var(--ghostty-font-size);
+  line-height: var(--ghostty-line-height);
+  font-variant-ligatures: none;
+  font-kerning: none;
+  white-space: pre;
+}
+
+.ghostty__screen > div {
+  white-space: pre;
+  height: var(--ghostty-line-height);
+}
+
+.ghostty__screen .b {
+  color: #3551f3;
+}
+
+.ghostty--failed {
+  display: none;
+}
+
+.hero-credit {
+  font-size: 12px;
+  color: #5c6270;
+  text-align: right;
+  margin-top: -20px;
+}
+
+.hero-credit a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.hero-credit a:hover {
+  color: #9ca3af;
+}
+
+/* ABOUT ME SECTION */
+.about-section {
+  padding: 60px 0;
+}
+
+.about-header {
+  margin-bottom: 25px;
+}
+
+.about-header h2 {
+  font-size: 32px;
+  color: #ffffff;
+  margin-top: 5px;
+}
+
+.about-card {
+  background-color: #1a1d26;
+  border: 1px solid #282c37;
+  border-radius: 16px;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.about-text p {
+  color: #9a9ea8;
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-text strong {
+  color: #ffffff;
+}
+
+/* HIGHLIGHTS GRID */
+.about-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  border-top: 1px solid #282c37;
+  padding-top: 25px;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.highlight-item i {
+  font-size: 20px;
+  color: #00ff88; /* Warna aksen sesuai tema */
+  background-color: rgba(0, 255, 136, 0.1);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.highlight-item h4 {
+  color: #ffffff;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.highlight-item p {
+  color: #8a8f9d;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* SKILLS SECTION */
+.skills-section {
+  padding: 60px 0;
+}
+
+.skills-header {
+  margin-bottom: 30px;
+}
+
+.skills-header h2 {
+  font-size: 32px;
+  color: #ffffff;
+  margin-top: 5px;
+}
+
+/* GRID LAYOUT UNTUK LOGO SKILL */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 18px;
+}
+
+.skill-card {
+  background-color: #1a1d26;
+  border: 1px solid #282c37;
+  border-radius: 12px;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.skill-card:hover {
+  transform: translateY(-5px);
+  border-color: #3b4252;
+  background-color: #212531;
+}
+
+/* UKURAN IKON DEVICON & FONTAWESOME */
+.skill-card i {
+  font-size: 40px;
+}
+
+/* UKURAN GAMBAR LOGO SVG (CANVA, DAVINCI, CAPCUT, DLL) */
+.skill-card img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.skill-card span {
+  font-size: 13px;
+  color: #a0a5b5;
+  font-weight: 500;
+}
+
+.skill-card:hover span {
+  color: #ffffff;
+}
+
+/* CONTACT SECTION */
+.contact-section {
+  padding: 60px 0 80px;
+}
+
+.contact-header {
+  margin-bottom: 35px;
+}
+
+.contact-header h2 {
+  font-size: 32px;
+  color: #ffffff;
+  margin: 5px 0 10px;
+}
+
+.contact-header p {
+  color: #9a9ea8;
+  font-size: 15px;
+}
+
+/* LAYOUT GRID UTAMA */
+.contact-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+}
+
+/* FORM STYLING */
+.contact-form {
+  background-color: #1a1d26;
+  border: 1px solid #282c37;
+  padding: 30px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #a0a5b5;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  background-color: #12141d;
+  border: 1px solid #282c37;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #00ff88;
+}
+
+.contact-form .btn-primary {
+  cursor: pointer;
+  border: none;
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+/* SOCIAL & INFO STYLING */
+.contact-info h3 {
+  color: #ffffff;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.contact-info p {
+  color: #9a9ea8;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.social-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.social-card {
+  background-color: #1a1d26;
+  border: 1px solid #282c37;
+  padding: 15px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.social-card i {
+  font-size: 22px;
+}
+
+.social-card:hover {
+  transform: translateY(-3px);
+  border-color: #3b4252;
+  background-color: #212531;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 30px 0;
+  color: #6c727f;
+  font-size: 13px;
+  border-top: 1px solid #1a1d26;
+  margin-top: 40px;
+}
+/* Terminal dan teks ditumpuk, hantu boleh lebih besar karena lebar penuh */
+@media (max-width: 1100px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-content {
+    flex: 0 0 auto;
+  }
+
+  .ghostty {
+    justify-content: center;
+    --ghostty-char-width: clamp(3.2px, 0.75vw, 7.2px);
+  }
+
+  .hero-credit {
+    text-align: center;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .ghostty {
+    --ghostty-padding: 10px;
+  }
+}
