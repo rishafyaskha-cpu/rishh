@@ -1,0 +1,37 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "outputDirectory": "public",
+  "framework": "laravel",
+  "phpVersion": "8.3",
+  "installCommand": "composer install --optimize-autoloader --no-dev --no-interaction",
+  "buildCommand": "APP_NAME=Rishh npm install && APP_NAME=Rishh npm run build && cp .env.example .env && php artisan key:generate --force",
+  "functions": {
+    "api/index.php": {
+      "maxDuration": 15
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.php" }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://$VERCEL_URL",
+    "APP_NAME": "Rishh",
+    "SESSION_DRIVER": "array",
+    "CACHE_STORE": "array",
+    "QUEUE_CONNECTION": "sync",
+    "LOG_CHANNEL": "stderr",
+    "APP_CONFIG_CACHE": "/tmp/config.php",
+    "APP_EVENTS_CACHE": "/tmp/events.php",
+    "APP_PACKAGES_CACHE": "/tmp/packages.php",
+    "APP_ROUTES_CACHE": "/tmp/routes.php",
+    "APP_SERVICES_CACHE": "/tmp/services.php",
+    "VIEW_COMPILED_PATH": "/tmp/views",
+    "SSR_TEMP_PATH": "/tmp/ssr"
+  },
+  "github": {
+    "silent": true,
+    "autoJobCancelation": true
+  }
+}
